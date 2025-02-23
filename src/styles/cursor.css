@@ -1,0 +1,22 @@
+.cursor-wrapper {
+  position: fixed;
+  width: 14px;
+  height: 14px;
+  pointer-events: none;
+}
+
+.arrow {
+  width: 14px;
+  height: 14px;
+}
+
+.label {
+  position: absolute;
+  top: 8px;
+  left: calc(100% + 4px);
+  color: white;
+  font-size: 12px;
+  padding: 2px 6px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
