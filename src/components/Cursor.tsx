@@ -1,7 +1,8 @@
 import React, { memo, useMemo } from "react";
-import stringToColor from "../utils/stringToColor";
+
 import type { CursorData } from "./CoCursorProvider";
-import "../styles/cursor.css";
+import "./cursor.css";
+import stringToColor from "../utils/stringToColor";
 
 function Cursor({ data }: { data: CursorData }) {
   const { x, y, name, visible, id } = data;
@@ -9,20 +10,23 @@ function Cursor({ data }: { data: CursorData }) {
 
   if (!visible) return null;
 
+  const width = document.documentElement.scrollWidth;
+  const height = document.documentElement.scrollHeight;
+
   return (
     <div
       style={{
-        top: y,
-        left: x,
+        top: y * height - window.scrollY,
+        left: x * width - window.scrollX,
       }}
-      className="cursor-wrapper"
+      className="cocursor__cursor-wrapper"
     >
       <Arrow color={color} />
       <div
         style={{
           backgroundColor: color,
         }}
-        className="label"
+        className="cocursor__label"
       >
         {name}
       </div>
@@ -35,7 +39,7 @@ export default memo(Cursor);
 function Arrow({ color }: { color: string }) {
   return (
     <svg
-      className="arrow"
+      className="cocursor__arrow"
       viewBox="0 0 96 104"
       xmlns="http://www.w3.org/2000/svg"
     >

@@ -1,16 +1,17 @@
-.cursor-wrapper {
+.cocursor__cursor-wrapper {
   position: fixed;
   width: 14px;
   height: 14px;
   pointer-events: none;
+  z-index: 2147483647;
 }
 
-.arrow {
+.cocursor__arrow {
   width: 14px;
   height: 14px;
 }
 
-.label {
+.cocursor__label {
   position: absolute;
   top: 8px;
   left: calc(100% + 4px);

@@ -5,9 +5,10 @@ import React, {
   useRef,
   useState,
 } from "react";
+
+import { CoCursorContext } from "./CoCursorContext";
 import Cursor from "./Cursor";
 import throttle from "../utils/throttle";
-import { CoCursorContext } from "./CoCursorContext";
 
 const WS_URL = "ws://15.165.148.251:8080";
 
@@ -59,10 +60,13 @@ export default function CoCursorProvider({
         return;
       }
 
+      const width = document.documentElement.scrollWidth;
+      const height = document.documentElement.scrollHeight;
+
       const cursorData: CursorData = {
         id: userId.current,
-        x: e.pageX,
-        y: e.pageY,
+        x: e.pageX / width,
+        y: e.pageY / height,
         visible: true,
         name: myName || "anonymous",
       };
@@ -117,6 +121,7 @@ export default function CoCursorProvider({
       // 웹소켓 연결 종료
       sendCursorOff();
       ws.current?.close();
+      ws.current = null;
     };
   }, [channel, disabled]);
 
