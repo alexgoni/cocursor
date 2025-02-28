@@ -1,7 +1,7 @@
 import React, { memo, useMemo } from "react";
 
 import type { CursorData } from "./CoCursorProvider";
-import "./cursor.css";
+import "../styles/cursor.css";
 import stringToColor from "../utils/stringToColor";
 
 function Cursor({ data }: { data: CursorData }) {
