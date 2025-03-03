@@ -1,10 +1,9 @@
 import React, { memo, useMemo } from "react";
-
-import type { CursorData } from "./CoCursorProvider";
-import "../styles/cursor.css";
 import stringToColor from "../utils/stringToColor";
+import type { CursorMessage } from "./types";
+import "../styles/cursor.css";
 
-function Cursor({ data }: { data: CursorData }) {
+function Cursor({ data }: { data: CursorMessage }) {
   const { x, y, name, visible, id } = data;
   const color = useMemo(() => stringToColor(id), [id]);
 

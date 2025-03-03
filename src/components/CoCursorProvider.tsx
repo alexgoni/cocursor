@@ -7,7 +7,6 @@ import React, {
   useRef,
   useState,
 } from "react";
-
 import { CoCursorContext } from "./CoCursorContext";
 import Cursor from "./Cursor";
 import throttle from "../utils/throttle";
