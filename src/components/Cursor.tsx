@@ -7,7 +7,7 @@ function Cursor({ data }: { data: CursorMessage }) {
   const { x, y, name, visible, id } = data;
   const color = useMemo(() => stringToColor(id), [id]);
 
-  if (!visible) return null;
+  if (!visible || x === undefined || y === undefined) return null;
 
   const width = document.documentElement.scrollWidth;
   const height = document.documentElement.scrollHeight;

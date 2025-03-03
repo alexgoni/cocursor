@@ -83,6 +83,7 @@ export default function CoCursorProvider({
     }
 
     const cursorData = {
+      type: "cursor",
       id: userId.current,
       visible: false,
     };
