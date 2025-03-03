@@ -11,16 +11,9 @@ import React, {
 import { CoCursorContext } from "./CoCursorContext";
 import Cursor from "./Cursor";
 import throttle from "../utils/throttle";
+import type { CursorMessage, WSMessage } from "./types";
 
 const WS_URL = "ws://15.165.148.251:8080";
-
-export interface CursorData {
-  id: string;
-  x: number;
-  y: number;
-  visible: boolean;
-  name: string;
-}
 
 interface Props {
   children: ReactNode;
@@ -47,7 +40,7 @@ export default function CoCursorProvider({
   const [quality, setQuality] = useState<"high" | "middle" | "low">(
     initialQuality
   );
-  const [cursors, setCursors] = useState<Record<string, CursorData>>({});
+  const [cursors, setCursors] = useState<Record<string, CursorMessage>>({});
   const [disabled, setDisabled] = useState(initialDisabled);
   const ws = useRef<WebSocket | null>(null);
   const userId = useRef(`user-${Math.random().toString(36).substring(2, 11)}`);
@@ -65,7 +58,8 @@ export default function CoCursorProvider({
       const width = document.documentElement.scrollWidth;
       const height = document.documentElement.scrollHeight;
 
-      const cursorData: CursorData = {
+      const cursorData: CursorMessage = {
+        type: "cursor",
         id: userId.current,
         x: e.pageX / width,
         y: e.pageY / height,
@@ -115,8 +109,15 @@ export default function CoCursorProvider({
 
     // 웹소켓 메시지 수신
     ws.current.onmessage = (event) => {
-      const cursorData: CursorData = JSON.parse(event.data);
-      setCursors((prev) => ({ ...prev, [cursorData.id]: cursorData }));
+      const data: WSMessage = JSON.parse(event.data);
+
+      if (data.type === "cursor") {
+        setCursors((prev) => ({ ...prev, [data.id]: data }));
+      }
+
+      if (data.type === "error") {
+        console.error(`CoCursor: ${data.message}`);
+      }
     };
 
     return () => {
