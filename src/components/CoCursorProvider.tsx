@@ -12,7 +12,7 @@ import Cursor from "./Cursor";
 import throttle from "../utils/throttle";
 import type { CursorMessage, WSMessage } from "./types";
 
-const WS_URL = "ws://15.165.148.251:8080";
+const WS_URL = "wss://cocursor-server.store/ws/";
 
 interface Props {
   children: ReactNode;
