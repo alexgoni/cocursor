@@ -34,10 +34,9 @@ export const Cursor = memo(({ data }: { data: CursorMessage }) => {
 });
 
 export const MyCursor = memo(({ myName }: { myName: string }) => {
-  const [position, setPosition] = useState<{ x: number; y: number } | null>({
-    x: 0,
-    y: 0,
-  });
+  const [position, setPosition] = useState<{ x: number; y: number } | null>(
+    null
+  );
   const [randomSeed] = useState(() =>
     Math.random().toString(36).substring(2, 5)
   );
