@@ -1,4 +1,9 @@
-import { createContext, useContext } from "react";
+import {
+  type Dispatch,
+  type SetStateAction,
+  createContext,
+  useContext,
+} from "react";
 
 interface CoCursorContext {
   channel?: string;
@@ -6,11 +11,13 @@ interface CoCursorContext {
   allowInfoSend: boolean;
   quality: "high" | "middle" | "low";
   disabled: boolean;
-  setChannel: (channel?: string) => void;
-  setMyName: (name?: string) => void;
-  setAllowInfoSend: (block: boolean) => void;
-  setQuality: (quality: "high" | "middle" | "low") => void;
-  setDisabled: (disable: boolean) => void;
+  showMyCursor?: boolean;
+  setChannel: Dispatch<SetStateAction<string | undefined>>;
+  setMyName: Dispatch<SetStateAction<string | undefined>>;
+  setAllowInfoSend: Dispatch<SetStateAction<boolean>>;
+  setQuality: Dispatch<SetStateAction<"high" | "middle" | "low">>;
+  setDisabled: Dispatch<SetStateAction<boolean>>;
+  setShowMyCursor: Dispatch<SetStateAction<boolean>>;
 }
 
 export const CoCursorContext = createContext<CoCursorContext | null>(null);

@@ -8,11 +8,11 @@ import React, {
   useState,
 } from "react";
 import { CoCursorContext } from "./CoCursorContext";
-import Cursor from "./Cursor";
+import { Cursor, MyCursor } from "./Cursor";
 import throttle from "../utils/throttle";
 import type { CursorMessage, WSMessage } from "./types";
 
-const WS_URL = "wss://cocursor-server.store/ws/";
+const WS_URL = "wss://cocursor-server.store/ws";
 
 interface Props {
   children: ReactNode;
@@ -22,6 +22,7 @@ interface Props {
   allowInfoSend?: boolean;
   quality?: "high" | "middle" | "low";
   disabled?: boolean;
+  showMyCursor?: boolean;
 }
 
 export default function CoCursorProvider({
@@ -32,6 +33,7 @@ export default function CoCursorProvider({
   allowInfoSend: initialAllowInfoSend = true,
   quality: initialQuality = "high",
   disabled: initialDisabled = false,
+  showMyCursor: initialShowMyCursor = true,
 }: Props) {
   const [channel, setChannel] = useState(initialChannel);
   const [myName, setMyName] = useState(initialMyName);
@@ -41,6 +43,7 @@ export default function CoCursorProvider({
   );
   const [cursors, setCursors] = useState<Record<string, CursorMessage>>({});
   const [disabled, setDisabled] = useState(initialDisabled);
+  const [showMyCursor, setShowMyCursor] = useState(initialShowMyCursor);
   const ws = useRef<WebSocket | null>(null);
   const userId = useRef(`user-${Math.random().toString(36).substring(2, 11)}`);
 
@@ -90,12 +93,16 @@ export default function CoCursorProvider({
     ws.current?.send(JSON.stringify(cursorData));
   };
 
+  const reset = () => {
+    sendCursorOff();
+    ws.current?.close();
+    ws.current = null;
+  };
+
   // 웹소켓 연결 및 설정
   useEffect(() => {
     if (disabled) {
-      sendCursorOff();
-      ws.current?.close();
-      ws.current = null;
+      reset();
       return;
     }
 
@@ -122,9 +129,7 @@ export default function CoCursorProvider({
 
     return () => {
       // 웹소켓 연결 종료
-      sendCursorOff();
-      ws.current?.close();
-      ws.current = null;
+      reset();
     };
   }, [channel, disabled]);
 
@@ -136,10 +141,12 @@ export default function CoCursorProvider({
 
     window.addEventListener("mousemove", throttledSendCursorPosition);
     document.addEventListener("mouseleave", sendCursorOff);
+    window.addEventListener("beforeunload", reset);
 
     return () => {
       window.removeEventListener("mousemove", throttledSendCursorPosition);
       document.removeEventListener("mouseleave", sendCursorOff);
+      window.removeEventListener("beforeunload", reset);
     };
   }, [throttledSendCursorPosition, disabled]);
 
@@ -154,21 +161,24 @@ export default function CoCursorProvider({
     <CoCursorContext.Provider
       value={{
         channel,
-        setChannel,
         myName,
-        setMyName,
         allowInfoSend,
-        setAllowInfoSend,
         quality,
-        setQuality,
         disabled,
+        showMyCursor,
+        setChannel,
+        setMyName,
+        setAllowInfoSend,
+        setQuality,
         setDisabled,
+        setShowMyCursor,
       }}
     >
       {!disabled &&
         Object.values(cursors).map((cursorData) => (
           <Cursor key={cursorData.id} data={cursorData} />
         ))}
+      {showMyCursor && <MyCursor myName={myName || "anonymous"} />}
       {children}
     </CoCursorContext.Provider>
   );
