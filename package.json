@@ -1,6 +1,6 @@
 {
   "name": "cocursor",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
@@ -9,7 +9,14 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "rollup": "rollup -c --bundleConfigAsCjs"
   },
-  "keywords": [],
+  "keywords": [
+    "cocursor",
+    "CoCursor",
+    "cursor",
+    "figma",
+    "websocket",
+    "realtime"
+  ],
   "author": "",
   "license": "ISC",
   "devDependencies": {
