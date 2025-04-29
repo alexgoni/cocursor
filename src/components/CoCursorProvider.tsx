@@ -1,5 +1,3 @@
-"use client";
-
 import React, {
   ReactNode,
   useCallback,
@@ -19,7 +17,7 @@ interface Props {
   apiKey: string;
   channel?: string;
   myName?: string;
-  allowInfoSend?: boolean;
+  allowMyCursorShare?: boolean;
   quality?: "high" | "middle" | "low";
   disabled?: boolean;
   showMyCursor?: boolean;
@@ -30,14 +28,16 @@ export default function CoCursorProvider({
   apiKey,
   channel: initialChannel,
   myName: initialMyName,
-  allowInfoSend: initialAllowInfoSend = true,
+  allowMyCursorShare: initailAllowMyCursorShare = true,
   quality: initialQuality = "high",
   disabled: initialDisabled = false,
-  showMyCursor: initialShowMyCursor = true,
+  showMyCursor: initialShowMyCursor = false,
 }: Props) {
   const [channel, setChannel] = useState(initialChannel);
   const [myName, setMyName] = useState(initialMyName);
-  const [allowInfoSend, setAllowInfoSend] = useState(initialAllowInfoSend);
+  const [allowMyCursorShare, setAllowMyCursorShare] = useState(
+    initailAllowMyCursorShare
+  );
   const [quality, setQuality] = useState<"high" | "middle" | "low">(
     initialQuality
   );
@@ -52,7 +52,7 @@ export default function CoCursorProvider({
       if (
         !ws.current ||
         ws.current.readyState !== WebSocket.OPEN ||
-        !allowInfoSend
+        !allowMyCursorShare
       ) {
         return;
       }
@@ -70,7 +70,7 @@ export default function CoCursorProvider({
       };
       ws.current?.send(JSON.stringify(cursorData));
     },
-    [allowInfoSend, myName]
+    [allowMyCursorShare, myName]
   );
   const throttleMS = (() => {
     if (quality === "high") return 0;
@@ -114,6 +114,10 @@ export default function CoCursorProvider({
     // 웹소켓 연결
     ws.current = new WebSocket(wsURL, [apiKey]);
 
+    ws.current.onopen = () => {
+      console.log("CoCursor: Connected to the WebSocket server.");
+    };
+
     // 웹소켓 메시지 수신
     ws.current.onmessage = (event) => {
       const data: WSMessage = JSON.parse(event.data);
@@ -125,6 +129,11 @@ export default function CoCursorProvider({
       if (data.type === "error") {
         console.error(`CoCursor: ${data.message}`);
       }
+    };
+
+    ws.current.onclose = () => {
+      reset();
+      console.log("CoCursor: Disconnected from the WebSocket server.");
     };
 
     return () => {
@@ -152,33 +161,56 @@ export default function CoCursorProvider({
 
   // 정보 송신 거부 시 커서 삭제
   useEffect(() => {
-    if (!allowInfoSend) {
+    if (!allowMyCursorShare) {
       sendCursorOff();
     }
-  }, [allowInfoSend]);
+  }, [allowMyCursorShare]);
+
+  // Prop가 변경될 때 상태 업데이트
+  useEffect(() => {
+    setChannel(initialChannel);
+  }, [initialChannel]);
+  useEffect(() => {
+    setMyName(initialMyName);
+  }, [initialMyName]);
+  useEffect(() => {
+    setAllowMyCursorShare(initailAllowMyCursorShare);
+  }, [initailAllowMyCursorShare]);
+  useEffect(() => {
+    setQuality(initialQuality);
+  }, [initialQuality]);
+  useEffect(() => {
+    setDisabled(initialDisabled);
+  }, [initialDisabled]);
+  useEffect(() => {
+    setShowMyCursor(initialShowMyCursor);
+  }, [initialShowMyCursor]);
 
   return (
     <CoCursorContext.Provider
       value={{
         channel,
         myName,
-        allowInfoSend,
+        allowMyCursorShare,
         quality,
         disabled,
         showMyCursor,
         setChannel,
         setMyName,
-        setAllowInfoSend,
+        setAllowMyCursorShare,
         setQuality,
         setDisabled,
         setShowMyCursor,
       }}
     >
-      {!disabled &&
-        Object.values(cursors).map((cursorData) => (
-          <Cursor key={cursorData.id} data={cursorData} />
-        ))}
-      {showMyCursor && <MyCursor myName={myName || "anonymous"} />}
+      {!disabled && (
+        <>
+          {Object.values(cursors).map((cursorData) => (
+            <Cursor key={cursorData.id} data={cursorData} />
+          ))}
+          {showMyCursor && <MyCursor myName={myName || "anonymous"} />}
+        </>
+      )}
       {children}
     </CoCursorContext.Provider>
   );

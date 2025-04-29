@@ -8,13 +8,13 @@ import {
 interface CoCursorContext {
   channel?: string;
   myName?: string;
-  allowInfoSend: boolean;
+  allowMyCursorShare: boolean;
   quality: "high" | "middle" | "low";
   disabled: boolean;
   showMyCursor?: boolean;
   setChannel: Dispatch<SetStateAction<string | undefined>>;
   setMyName: Dispatch<SetStateAction<string | undefined>>;
-  setAllowInfoSend: Dispatch<SetStateAction<boolean>>;
+  setAllowMyCursorShare: Dispatch<SetStateAction<boolean>>;
   setQuality: Dispatch<SetStateAction<"high" | "middle" | "low">>;
   setDisabled: Dispatch<SetStateAction<boolean>>;
   setShowMyCursor: Dispatch<SetStateAction<boolean>>;

@@ -1,7 +1,7 @@
 {
   "name": "cocursor",
-  "version": "0.0.9",
-  "description": "",
+  "version": "0.0.10",
+  "description": "Real-time Cursor Tracking Library",
   "main": "dist/index.js",
   "module": "dist/index.mjs",
   "types": "dist/index.d.ts",
@@ -17,19 +17,21 @@
     "websocket",
     "realtime"
   ],
-  "author": "",
+  "author": "alexgoni",
   "license": "ISC",
   "devDependencies": {
     "@rollup/plugin-commonjs": "^28.0.2",
     "@rollup/plugin-node-resolve": "^16.0.0",
     "@rollup/plugin-terser": "^0.4.4",
     "@rollup/plugin-typescript": "^12.1.2",
-    "@types/react": "^18.0.0",
-    "react": "^18.0.0",
     "rollup-plugin-dts": "^6.1.1",
     "rollup-plugin-peer-deps-external": "^2.2.4",
     "rollup-plugin-postcss": "^4.0.2",
     "tslib": "^2.8.1",
     "typescript": "^5.0.0"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   }
 }

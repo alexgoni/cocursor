@@ -34,16 +34,16 @@ export default function PageComponent() {
 
 ### Props
 
-| Prop            | Type                      | Description                                                                    |
-| --------------- | ------------------------- | ------------------------------------------------------------------------------ |
-| `apiKey`        | `string`                  | Required API key                                                               |
-| `children`      | `ReactNode`               | -                                                                              |
-| `channel`       | `string`                  | Set a channel for your project. `channel="team1"`                              |
-| `myName`        | `string`                  | The name that appears on your cursor to other users. `myName="alexgoni"`       |
-| `allowInfoSend` | `boolean`                 | Whether to send your cursor information to other users. `allowInfoSend={true}` |
-| `showMyCursor`  | `boolean`                 | Whether to hide your cursor. `showMyCursor={false}`                            |
-| `quality`       | `"high", "middle", "low"` | Quality setting. The default is `"high"`. `quality="middle"`                   |
-| `disabled`      | `boolean`                 | Whether to disable CoCursor functionality. `disabled={true}`                   |
+| Prop                 | Type                      | Description                                                                         |
+| -------------------- | ------------------------- | ----------------------------------------------------------------------------------- |
+| `apiKey`             | `string`                  | Required API key                                                                    |
+| `children`           | `ReactNode`               | -                                                                                   |
+| `channel`            | `string`                  | Set a channel for your project. `channel="team1"`                                   |
+| `myName`             | `string`                  | The name that appears on your cursor to other users. `myName="alexgoni"`            |
+| `allowMyCursorShare` | `boolean`                 | Whether to send your cursor information to other users. `allowMyCursorShare={true}` |
+| `showMyCursor`       | `boolean`                 | Whether to hide your cursor. `showMyCursor={false}`                                 |
+| `quality`            | `"high", "middle", "low"` | Quality setting. The default is `"high"`. `quality="middle"`                        |
+| `disabled`           | `boolean`                 | Whether to disable CoCursor functionality. `disabled={true}`                        |
 
 ## useCoCursor
 
@@ -54,7 +54,7 @@ const {
   // state
   channel,
   myName,
-  allowInfoSend,
+  allowMyCursorShare,
   showMyCursor,
   quality,
   disabled,
