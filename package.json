@@ -1,6 +1,6 @@
 {
   "name": "cocursor",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "description": "Real-time Cursor Tracking Library",
   "main": "dist/index.js",
   "module": "dist/index.mjs",

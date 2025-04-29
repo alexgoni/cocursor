@@ -132,7 +132,7 @@ export default function CoCursorProvider({
     };
 
     ws.current.onclose = () => {
-      reset();
+      sendCursorOff();
       console.log("CoCursor: Disconnected from the WebSocket server.");
     };
 
