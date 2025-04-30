@@ -23,12 +23,33 @@ interface Props {
   showMyCursor?: boolean;
 }
 
+/**
+ * CoCursorProvider component to manage cursor sharing and WebSocket connection.
+ * This provider uses WebSocket to track and share cursor positions among users
+ * in real-time.
+ *
+ * @example
+ * ```tsx
+ * <CoCursorProvider apiKey="your-api-key">
+ *   <YourComponent />
+ * </CoCursorProvider>
+ * ```
+ * @props {ReactNode} children - React children to be rendered inside the provider.
+ * @props {string} apiKey - API key for authenticating the WebSocket connection.
+ * @props {string} [channel] - Optional channel name for the WebSocket connection.
+ * @props {string} [myName] - Optional name of the user for cursor display.
+ * @props {boolean} [allowMyCursorShare] - Flag to enable/disable sharing the user's cursor.
+ * @props {'high' | 'middle' | 'low'} [quality] - Defines the quality of cursor updates (affects throttling).
+ * @props {boolean} [disabled] - Flag to disable the cursor sharing functionality.
+ * @props {boolean} [showMyCursor] - Flag to show/hide the user's cursor.
+ * @returns {JSX.Element} The JSX element to render.
+ */
 export default function CoCursorProvider({
   children,
   apiKey,
   channel: initialChannel,
   myName: initialMyName,
-  allowMyCursorShare: initailAllowMyCursorShare = true,
+  allowMyCursorShare: initialAllowMyCursorShare = true,
   quality: initialQuality = "high",
   disabled: initialDisabled = false,
   showMyCursor: initialShowMyCursor = false,
@@ -36,7 +57,7 @@ export default function CoCursorProvider({
   const [channel, setChannel] = useState(initialChannel);
   const [myName, setMyName] = useState(initialMyName);
   const [allowMyCursorShare, setAllowMyCursorShare] = useState(
-    initailAllowMyCursorShare
+    initialAllowMyCursorShare
   );
   const [quality, setQuality] = useState<"high" | "middle" | "low">(
     initialQuality
@@ -174,8 +195,8 @@ export default function CoCursorProvider({
     setMyName(initialMyName);
   }, [initialMyName]);
   useEffect(() => {
-    setAllowMyCursorShare(initailAllowMyCursorShare);
-  }, [initailAllowMyCursorShare]);
+    setAllowMyCursorShare(initialAllowMyCursorShare);
+  }, [initialAllowMyCursorShare]);
   useEffect(() => {
     setQuality(initialQuality);
   }, [initialQuality]);
