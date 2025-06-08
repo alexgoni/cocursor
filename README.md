@@ -1,6 +1,6 @@
 ## Introduction
 
-> [CoCursor](https://cocursor-service.vercel.app/)
+> [CoCursor](https://cocursor.vercel.app/)
 
 **CoCursor** is a service that supports real-time cursor tracking for React projects.
 Move the cursor from the Figma canvas to your webpage and track it in real-time.
@@ -8,7 +8,7 @@ Move the cursor from the Figma canvas to your webpage and track it in real-time.
 ## Installation
 
 First, you need to obtain an API Key for use.  
-You can get the API key from [CoCursor](https://cocursor-service.vercel.app/installation).
+You can get the API key from [CoCursor](https://cocursor.vercel.app/).
 
 Then, install the package in your project using your preferred package manager:
 
